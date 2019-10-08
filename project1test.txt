@@ -339,7 +339,7 @@ void TetrisBattle23(T fallingblock, int **matrix, int index, int matrixrow, int 
     for(int fallingtimes=0;fallingtimes<=matrixrow;fallingtimes++){
         //if(matrix[fallingtimes+3][col])
         for(int col=index-1;col<index-1+fallingblock.col;col++){
-            if(matrix[fallingtimes+4][col]==1){
+            if(matrix[fallingtimes+3][col]==1){
                 if(fallingtimes==0){
                     end=1;
                     break;
@@ -357,19 +357,21 @@ void TetrisBattle23(T fallingblock, int **matrix, int index, int matrixrow, int 
         }
         if(end)
             break;
-        for(int elimination=fallingblock.row;elimination>=1;elimination--){
-            for(int col=0;col<matrixcol;col++){
-                if(matrix[fallingtimes+elimination+1][col]==0){
-                    check=0;
-                    break;
+        if(stop){
+            for(int elimination=fallingblock.row;elimination>=1;elimination--){
+                for(int col=0;col<matrixcol;col++){
+                    if(matrix[fallingtimes+elimination+1][col]==0){
+                        check=0;
+                        break;
+                    }
+                    else
+                        check=1;
                 }
-                else
-                    check=1;
+                for(int col=0;col<matrixcol;col++){
+                    matrix[fallingtimes+elimination+1][col]=0;   
+                }
             }
-            while(check){
-                matrix[fallingtimes+elimination+1][col]=0;
-                col++;    
-            }
+            stop=0;
         }
         cout << "Falling:" << fallingtimes << endl;
     }
@@ -407,19 +409,24 @@ int main(){
         initial=0;
     }
     //放大matrix
-    m=m+4;
+    m=m+5;
     matrix=new int*[m];
     for(int i=0;i<m;i++){
         matrix[i]=new int[n];
     }
     //印出matrix並初始化為0
-    for(int i=0;i<m;i++){
+    for(int i=0;i<m-1;i++){
         for(int j=0;j<n;j++){
             matrix[i][j]=0;
             cout << matrix[i][j];
         }
         cout << endl;
     }
+    for(int j=0;j<n;j++){
+        matrix[m-1][j]=1;
+        cout << matrix[m-1][j];
+    }
+    cout << endl;
     //cout << fallingblockI1.col;
     while(file1 >> str){
         if(str!="End"){
@@ -429,7 +436,7 @@ int main(){
                 case 'T':
                     switch(str[1]){
                         case '1':
-                            TetrisBattle23(fallingblockT1,matrix,index,m-4,n);
+                            TetrisBattle23(fallingblockT1,matrix,index,m-5,n);
                             /*for(int fallingtimes=0;fallingtimes<=m-4;fallingtimes++){
                                 for(int col=index-1;col<index-1+fallingblockT1.col;col++){
                                     matrix[fallingtimes+3][col]=fallingblockT1.shape[1][col-index+1];
