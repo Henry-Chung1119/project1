@@ -380,88 +380,65 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                     matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
                     matrix[fallingtimes+1][col]=0;
                 }
-                /*if(matrix[fallingtimes+3][col]==1){
-                    if(fallingtimes==1){
-                        //需增加回傳值讓程式結束
-                        end=1;
-                        break;
-                    }
-                    else{
-                        stop=1;
-                        break;
-                    }
-                }
-                else{
-                    matrix[fallingtimes+3][col]=fallingblock.shape[1][col-index+1];
-                    matrix[fallingtimes+2][col]=fallingblock.shape[0][col-index+1];
-                    matrix[fallingtimes+1][col]=0;
-                }*/
             }
         }
-        /*for(int j=0;j<matrixcol;j++){
-
-        }*/
-        //cout << "stop=" << stop << endl;
         if(stop){
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     if(matrix[fallingtimes+elimination+1][col]==0){
                         check=0;
-                        end=1;
+                        //end=1;
                         //cout << "yes again" << endl;
                         break;
                     }
                     else
                         check=1;
                 }
-                if(end){
-                //stop=0;
-                break;
-                }
                 if(check){
                     for(int col=0;col<matrixcol;col++){
                         matrix[fallingtimes+elimination+1][col]=0;   
                     }
-                    check=0;
+                    //check=0;
                     eliminationlocation=elimination;
                     eliminationtimes++;
                 }
             }
         }
         if(eliminationtimes>0){
-        switch(eliminationtimes){
-            case(0):
-                end=1;
-                break;
-            case(1):
-                //different for every function
-                for(int row=fallingtimes+eliminationlocation+1;row>0;row--){
-                    for(int col=0;col<matrixcol;col++){
-                        matrix[row][col]=matrix[row-1][col];
+            switch(eliminationtimes){
+                case(0):
+                    end=1;
+                    break;
+                case(1):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation+1;row>0;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-1][col];
+                        }
                     }
-                }
-                for(int col=0;col<matrixcol;col++){
+                    for(int col=0;col<matrixcol;col++){
                         matrix[0][col]=0;
-                }
-                end=1;
-                break;
-            case(2):
-               for(int row=fallingtimes+eliminationlocation+1;row>1;row--){
-                    for(int col=0;col<matrixcol;col++){
-                        matrix[row][col]=matrix[row-2][col];
                     }
-                }
-                for(int col=0;col<matrixcol;col++){
+                    end=1;
+                    break;
+                case(2):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation+1;row>1;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-2][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
                         matrix[0][col]=0;
                         matrix[1][col]=0;        
-                }
-                end=1;
-                break;
-            default:
-                cout << "Eliminationtimes error!" << endl;
-                end=1;
-                break;
-        }
+                    }
+                    end=1;
+                    break;
+                default:
+                    cout << "Eliminationtimes error!" << endl;
+                    end=1;
+                    break;
+            }
         }
         //stop=0;
         //end=1;
@@ -471,105 +448,143 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
         cout << "Falling:" << fallingtimes << endl;
     }
 }
+
+
+
 //3*2 block
-template<class U>
-void TetrisBattle32(U fallingblock, int **matrix, int index, int matrixrow, int matrixcol){
+template<class T>
+void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int matrixcol, bool &endgame){
     bool check=0;
     bool stop=0;
-    bool end;
+    bool end=0;
     int eliminationtimes=0;
     int eliminationlocation=0;
+    //T1 fallingblock;
     for(int fallingtimes=0;fallingtimes<=matrixrow;fallingtimes++){
         //if(matrix[fallingtimes+3][col])
-        //block掉落過程
-        for(int col=index-1;col<index-1+fallingblock.col;col++){
-            if(matrix[fallingtimes+3][col]==1){
-                if(fallingtimes==1){
-                    end=1;
-                    break;
+        for(int j=index-1;j<index+fallingblock.col-1;j++){
+            if(matrix[fallingtimes+2][j]==1){
+                if(matrix[fallingtimes+3][j]==1){
+                    if(fallingtimes==1){
+                        endgame=1;
+                        //stop=1;
+                        //end=1;
+                        break;
+                    }
+                    else{
+                        stop=1;
+                    //cout << "yes" << endl;
+                        break;
+                    }
                 }
-                else{
-                    stop=1;
-                    break;
-                }
-            }
-            else{
-                matrix[fallingtimes+3][col]=fallingblock.shape[2][col-index+1];
-                matrix[fallingtimes+2][col]=fallingblock.shape[1][col-index+1];
-                matrix[fallingtimes+1][col]=fallingblock.shape[0][col-index+1];
-                matrix[fallingtimes+1][col]=0;
             }
         }
-        //停下來之後判斷消除
-        //10/9
-        for(int elimination=1;elimination<=fallingblock.row;elimination++){
-            for(int col=0;col<matrixcol;col++){
-                if(matrix[fallingtimes+elimination][col]==0){
-                    check=0;
-                    //end=1;
-                    break;
+        if(endgame)
+            break;
+        //different for every function------
+        if(!stop){
+            for(int col=index-1;col<index-1+fallingblock.col;col++){
+                if(fallingtimes==0){
+                    matrix[fallingtimes+3][col]=fallingblock.shape[2][col-index+1];
+                    matrix[fallingtimes+2][col]=fallingblock.shape[1][col-index+1];
+                    matrix[fallingtimes+1][col]=fallingblock.shape[0][col-index+1];
+                }
+                else if(matrix[fallingtimes+2][col]==0 && matrix[fallingtimes+3][col]==1){
+                    matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
+                    matrix[fallingtimes+1][col]=matrix[fallingtimes][col];
+                    matrix[fallingtimes][col]=0;
+                    stop=1;
+                    //cout << "yes right" << endl;
                 }
                 else{
-                    check=1;
+                    if(fallingtimes==matrixrow){
+                        stop=1;
+                    }
+                    matrix[fallingtimes+3][col]=matrix[fallingtimes+2][col];
+                    matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
+                    matrix[fallingtimes+1][col]=matrix[fallingtimes][col];
+                    matrix[fallingtimes][col]=0;
                 }
             }
-            if(check){
+        }
+        //------
+        if(stop){
+            for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
-                    matrix[fallingtimes+elimination][col]=0;   
+                    //different for every function------
+                    if(matrix[fallingtimes+elimination][col]==0){
+                        check=0;
+                        //end=1;
+                        //cout << "yes again" << endl;
+                        break;
+                    }
+                    else
+                        check=1;
                 }
-                check=0;
-                eliminationlocation=elimination;
-                eliminationtimes++;
+                if(check){
+                    for(int col=0;col<matrixcol;col++){
+                        //different for every function------
+                        matrix[fallingtimes+elimination][col]=0;   
+                    }
+                    //check=0;
+                    eliminationlocation=elimination;
+                    eliminationtimes++;
+                }
+            }
+        }
+        if(eliminationtimes>0){
+            switch(eliminationtimes){
+                case(0):
+                    end=1;
+                    break;
+                case(1):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation;row>0;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-1][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                    }
+                    end=1;
+                    break;
+                case(2):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation;row>1;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-2][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                        matrix[1][col]=0;        
+                    }
+                    end=1;
+                    break;
+                case(3):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation;row>2;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-3][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                        matrix[1][col]=0;
+                        matrix[2][col]=0;         
+                    }
+                    end=1;
+                    break;
+                default:
+                    cout << "Eliminationtimes error!" << endl;
+                    end=1;
+                    break;
             }
         }
         //stop=0;
-        switch(eliminationtimes){
-            case(0):
-                end=1;
-                break;
-            case(1):
-                for(int row=fallingtimes+eliminationlocation;row>0;row--){
-                    for(int col=0;col<matrixcol;col++){
-                        matrix[row][col]=matrix[row-1][col];
-                    }
-                }
-                for(int col=0;col<matrixcol;col++){
-                        matrix[0][col]=0;
-                }
-                end=1;
-                break;
-            case(2):
-               for(int row=fallingtimes+eliminationlocation;row>1;row--){
-                    for(int col=0;col<matrixcol;col++){
-                        matrix[row][col]=matrix[row-2][col];
-                    }
-                }
-                for(int col=0;col<matrixcol;col++){
-                        matrix[0][col]=0;
-                        matrix[1][col]=0;        
-                }
-                end=1;
-                break;
-            case(3):
-                for(int row=fallingtimes+eliminationlocation;row>2;row--){
-                    for(int col=0;col<matrixcol;col++){
-                        matrix[row][col]=matrix[row-3][col];
-                    }
-                }
-                for(int col=0;col<matrixcol;col++){
-                        matrix[0][col]=0;
-                        matrix[1][col]=0;
-                        matrix[2][col]=0;          
-                }
-                end=1;
-                break;
-            default:
-                cout << "Eliminationtimes error!" << endl;
-                end=1;
-                break;
-
-        }
-
+        //end=1;
+        
         if(end)
             break;
         cout << "Falling:" << fallingtimes << endl;
@@ -648,7 +663,7 @@ int main(){
                             }*/
                             break;
                         case '2':
-                            TetrisBattle32(fallingblockT2,matrix,index,m-5,n);
+                            TetrisBattle32(fallingblockT2,matrix,index,m-5,n,endgame);
                             break;
                             
                         case '3':
