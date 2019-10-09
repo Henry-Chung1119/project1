@@ -332,7 +332,7 @@ class O:public block{
 };
 //2*3 block
 template<class T>
-void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int matrixcol){
+void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int matrixcol, bool &endgame){
     bool check=0;
     bool stop=0;
     bool end=0;
@@ -342,13 +342,24 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
     for(int fallingtimes=0;fallingtimes<=matrixrow;fallingtimes++){
         //if(matrix[fallingtimes+3][col])
         for(int j=index-1;j<index+fallingblock.col-1;j++){
-            if(matrix[fallingtimes+3][j]==1){
-                if(matrix[fallingtimes+4][j]==1){
-                    stop=1;
-                    break;
+            if(matrix[fallingtimes+2][j]==1){
+                if(matrix[fallingtimes+3][j]==1){
+                    if(fallingtimes==1){
+                        endgame=1;
+                        //stop=1;
+                        //end=1;
+                        break;
+                    }
+                    else{
+                        stop=1;
+                    //cout << "yes" << endl;
+                        break;
+                    }
                 }
             }
         }
+        if(endgame)
+            break;
         if(!stop){
             for(int col=index-1;col<index-1+fallingblock.col;col++){
                 if(fallingtimes==0){
@@ -359,9 +370,12 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                     matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
                     matrix[fallingtimes+1][col]=0;
                     stop=1;
-                    //cout << "yes" << endl;
+                    //cout << "yes right" << endl;
                 }
                 else{
+                    if(fallingtimes==matrixrow){
+                        stop=1;
+                    }
                     matrix[fallingtimes+3][col]=matrix[fallingtimes+2][col];
                     matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
                     matrix[fallingtimes+1][col]=0;
@@ -384,21 +398,25 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                 }*/
             }
         }
-        cout << "stop=" << stop << endl;
+        /*for(int j=0;j<matrixcol;j++){
+
+        }*/
+        //cout << "stop=" << stop << endl;
         if(stop){
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     if(matrix[fallingtimes+elimination+1][col]==0){
                         check=0;
                         end=1;
+                        //cout << "yes again" << endl;
                         break;
                     }
                     else
                         check=1;
                 }
                 if(end){
-                    stop=0;
-                    break;
+                //stop=0;
+                break;
                 }
                 if(check){
                     for(int col=0;col<matrixcol;col++){
@@ -409,7 +427,9 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                     eliminationtimes++;
                 }
             }
-            switch(eliminationtimes){
+        }
+        if(eliminationtimes>0){
+        switch(eliminationtimes){
             case(0):
                 end=1;
                 break;
@@ -441,10 +461,11 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                 cout << "Eliminationtimes error!" << endl;
                 end=1;
                 break;
-            }
-            stop=0;
-            end=1;
         }
+        }
+        //stop=0;
+        //end=1;
+        
         if(end)
             break;
         cout << "Falling:" << fallingtimes << endl;
@@ -480,29 +501,28 @@ void TetrisBattle32(U fallingblock, int **matrix, int index, int matrixrow, int 
             }
         }
         //停下來之後判斷消除
-        if(stop){
-            for(int elimination=1;elimination<=fallingblock.row;elimination++){
-                for(int col=0;col<matrixcol;col++){
-                    if(matrix[fallingtimes+elimination][col]==0){
-                        check=0;
-                        //end=1;
-                        break;
-                    }
-                    else{
-                        check=1;
-                    }
-                }
-                if(check){
-                    for(int col=0;col<matrixcol;col++){
-                        matrix[fallingtimes+elimination][col]=0;   
-                    }
+        //10/9
+        for(int elimination=1;elimination<=fallingblock.row;elimination++){
+            for(int col=0;col<matrixcol;col++){
+                if(matrix[fallingtimes+elimination][col]==0){
                     check=0;
-                    eliminationlocation=elimination;
-                    eliminationtimes++;
+                    //end=1;
+                    break;
+                }
+                else{
+                    check=1;
                 }
             }
-            stop=0;
+            if(check){
+                for(int col=0;col<matrixcol;col++){
+                    matrix[fallingtimes+elimination][col]=0;   
+                }
+                check=0;
+                eliminationlocation=elimination;
+                eliminationtimes++;
+            }
         }
+        //stop=0;
         switch(eliminationtimes){
             case(0):
                 end=1;
@@ -579,6 +599,7 @@ int main(){
     int m,n; //m=matrixrow,n=matrixcol
     int **matrix;
     int initial=1;
+    bool endgame=0;
     file1.open("tetris.data");
     string str;
     int index;
@@ -607,7 +628,7 @@ int main(){
     }
     cout << endl;
     //cout << fallingblockI1.col;
-    while(file1 >> str){
+    while(file1 >> str && endgame!=1){
         if(str!="End"){
             file1 >> index;
             //cout << str << " " << index << endl;
@@ -615,7 +636,8 @@ int main(){
                 case 'T':
                     switch(str[1]){
                         case '1':
-                            TetrisBattle23(fallingblockT1,matrix,index,m-5,n);
+                            TetrisBattle23(fallingblockT1,matrix,index,m-5,n,endgame);
+                            cout << "endgame=" << endgame << endl;
                             /*for(int fallingtimes=0;fallingtimes<=m-4;fallingtimes++){
                                 for(int col=index-1;col<index-1+fallingblockT1.col;col++){
                                     matrix[fallingtimes+3][col]=fallingblockT1.shape[1][col-index+1];
