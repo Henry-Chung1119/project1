@@ -590,6 +590,162 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
         cout << "Falling:" << fallingtimes << endl;
     }
 }
+
+template<class T>
+void TetrisBattle41(T &fallingblock, int **matrix, int index, int matrixrow, int matrixcol, bool &endgame){
+    bool check=0;
+    bool stop=0;
+    bool end=0;
+    int eliminationtimes=0;
+    int eliminationlocation=0;
+    //T1 fallingblock;
+    for(int fallingtimes=0;fallingtimes<=matrixrow;fallingtimes++){
+        //if(matrix[fallingtimes+3][col])
+        for(int j=index-1;j<index+fallingblock.col-1;j++){
+            if(matrix[fallingtimes+2][j]==1){
+                if(matrix[fallingtimes+3][j]==1){
+                    if(fallingtimes==1){
+                        endgame=1;
+                        //stop=1;
+                        //end=1;
+                        break;
+                    }
+                    else{
+                        stop=1;
+                    //cout << "yes" << endl;
+                        break;
+                    }
+                }
+            }
+        }
+        if(endgame)
+            break;
+        //different for every function------
+        if(!stop){
+            for(int col=index-1;col<index-1+fallingblock.col;col++){
+                if(fallingtimes==0){
+                    matrix[fallingtimes+3][col]=fallingblock.shape[3][col-index+1];
+                    matrix[fallingtimes+2][col]=fallingblock.shape[2][col-index+1];
+                    matrix[fallingtimes+1][col]=fallingblock.shape[1][col-index+1];
+                    matrix[fallingtimes][col]=fallingblock.shape[0][col-index+1];
+                }
+                /*else if(matrix[fallingtimes+2][col]==0 && matrix[fallingtimes+3][col]==1){
+                    matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
+                    matrix[fallingtimes+1][col]=matrix[fallingtimes][col];
+                    matrix[fallingtimes][col]=0;
+                    stop=1;
+                    //cout << "yes right" << endl;
+                }*/
+                else{
+                    if(fallingtimes==matrixrow){
+                        stop=1;
+                    }
+                    matrix[fallingtimes+3][col]=matrix[fallingtimes+2][col];
+                    matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
+                    matrix[fallingtimes+1][col]=matrix[fallingtimes][col];
+                    matrix[fallingtimes][col]=matrix[fallingtimes-1][col];
+                    matrix[fallingtimes-1][col]=0;
+                }
+            }
+        }
+        //------
+        if(stop){
+            for(int elimination=1;elimination<=fallingblock.row;elimination++){
+                for(int col=0;col<matrixcol;col++){
+                    //different for every function------
+                    if(matrix[fallingtimes+elimination-1][col]==0){
+                        check=0;
+                        //end=1;
+                        //cout << "yes again" << endl;
+                        break;
+                    }
+                    else
+                        check=1;
+                }
+                if(check){
+                    for(int col=0;col<matrixcol;col++){
+                        //different for every function------
+                        matrix[fallingtimes+elimination-1][col]=0;   
+                    }
+                    //check=0;
+                    eliminationlocation=elimination;
+                    eliminationtimes++;
+                }
+            }
+        }
+        if(eliminationtimes>0){
+            switch(eliminationtimes){
+                case(0):
+                    end=1;
+                    break;
+                case(1):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation-1;row>0;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-1][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                    }
+                    end=1;
+                    break;
+                case(2):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation-1;row>1;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-2][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                        matrix[1][col]=0;        
+                    }
+                    end=1;
+                    break;
+                case(3):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation-1;row>2;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-3][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                        matrix[1][col]=0;
+                        matrix[2][col]=0;         
+                    }
+                    end=1;
+                    break;
+                case(4):
+                    //different for every function
+                    for(int row=fallingtimes+eliminationlocation-1;row>3;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-4][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                        matrix[1][col]=0;
+                        matrix[2][col]=0;
+                        matrix[3][col]=0;          
+                    }
+                    end=1;
+                    break;
+                default:
+                    cout << "Eliminationtimes error!" << endl;
+                    end=1;
+                    break;
+            }
+        }
+        //stop=0;
+        //end=1;
+        
+        if(end)
+            break;
+        cout << "Falling:" << fallingtimes << endl;
+    }
+}
 int main(){
     T1 fallingblockT1;
     T2 fallingblockT2;
@@ -667,72 +823,75 @@ int main(){
                             break;
                             
                         case '3':
-                            //TetrisBattle23(fallingblockT3,matrix,index,m-5,n);
+                            TetrisBattle23(fallingblockT3,matrix,index,m-5,n,endgame);
                             break;
                             
-                        //case '4':
-                            
+                        case '4':
+                            TetrisBattle32(fallingblockT4,matrix,index,m-5,n,endgame);
+                            break;     
                     }
                     break;
                 case 'L':
                     switch(str[1]){
-                        //case '1':
-                            cout << "L1" << endl;
+                        case '1':
+                            TetrisBattle32(fallingblockL1,matrix,index,m-5,n,endgame);
                             break;
                         case '2':
-                            //TetrisBattle23(fallingblockL2,matrix,index,m-5,n);
-                            break;
-                            
-                        //case '3':
-                            
+                            TetrisBattle23(fallingblockL2,matrix,index,m-5,n,endgame);
+                            break;   
+                        case '3':
+                            TetrisBattle32(fallingblockL3,matrix,index,m-5,n,endgame);
+                            break;    
                         case '4':
-                            //TetrisBattle23(fallingblockL4,matrix,index,m-5,n);
+                            TetrisBattle23(fallingblockL4,matrix,index,m-5,n,endgame);
                             break;
                             
                     }
                     break;
                 case 'J':
                     switch(str[1]){
-                        //case '1':
-                            
+                        case '1':
+                            TetrisBattle32(fallingblockJ1,matrix,index,m-5,n,endgame);
+                            break;
                         case '2':
-                            //TetrisBattle23(fallingblockJ2,matrix,index,m-5,n);
+                            TetrisBattle23(fallingblockJ2,matrix,index,m-5,n,endgame);
+                            break;    
+                        case '3':
+                            TetrisBattle32(fallingblockJ3,matrix,index,m-5,n,endgame);
                             break;
-                            
-                        //case '3':
-                            
                         case '4':
-                            //TetrisBattle23(fallingblockJ4,matrix,index,m-5,n);
-                            break;
-                            
+                            TetrisBattle23(fallingblockJ4,matrix,index,m-5,n,endgame);
+                            break;           
                     }
                 case 'S':
                     switch(str[1]){
                         case '1':
-                            //TetrisBattle23(fallingblockS1,matrix,index,m-5,n);
-                            break;
-                            
-                        //case '2':
-                            
+                            TetrisBattle23(fallingblockS1,matrix,index,m-5,n,endgame);
+                            break;     
+                        case '2':
+                            TetrisBattle32(fallingblockS2,matrix,index,m-5,n,endgame);
+                            break;          
                     }
                 case 'Z':
                     switch(str[1]){
                         case '1':
-                            //TetrisBattle23(fallingblockZ1,matrix,index,m-5,n);
-                            break;
-                            
-                        //case '2':
-                            
+                            TetrisBattle23(fallingblockZ1,matrix,index,m-5,n,endgame);
+                            break;    
+                        case '2':
+                            TetrisBattle32(fallingblockZ2,matrix,index,m-5,n,endgame);
+                            break;       
                     }
                 case 'I':
                     switch(str[1]){
                         case '1':
-                            //cout << "I1" << endl;
+                            TetrisBattle41(fallingblockI1,matrix,index,m-5,n,endgame);
                             break;
                         case '2':
-                            //cout << "I2" << endl;
+                            //TetrisBattle14(fallingblockI2,matrix,index,m-5,n,endgame);
                             break;
                     }
+                    break;
+                case 'O':
                     break;
                 //default:
             }
