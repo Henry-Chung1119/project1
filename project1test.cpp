@@ -601,13 +601,13 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
         }
         //stop=0;
         //end=1;
-        cout << "Falling:" << fallingtimes << endl;
+        /*cout << "Falling:" << fallingtimes << endl;
         for(int i=0;i<matrixrow+5;i++){
             for(int j=0;j<matrixcol;j++){
                 cout << matrix[i][j];
             }
             cout << endl;
-        }
+        }*/
         if(end)
             break;
         //cout << "Falling:" << fallingtimes << endl;
