@@ -1040,7 +1040,7 @@ int main(){
     int **matrix;
     int initial=1;
     bool endgame=0;
-    file1.open("tetris.data");
+    file1.open("Tetris.data");
     string str;
     int index;
     //讀取matrix大小
@@ -1180,7 +1180,22 @@ int main(){
         cout << endl;
     }
     //cout << matrix[0][0];
+    //file1.close();
+    ofstream file2("Tetris.output");
+    //file2.open("Tetris.output");
+    if(!file2){
+        cout << "File2 open fail!" << endl;
+    }
+    else{
+        for(int i=4;i<m-1;i++){
+            for(int j=0;j<n;j++){
+                file2 << matrix[i][j];
+            }
+            file2 << endl;
+        }
+    }
     file1.close();
+    file2.close();
     //記憶體釋放
     for(int i=0;i<m;i++)
         delete[] matrix[i];
