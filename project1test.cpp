@@ -352,6 +352,7 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                     }
                     else{
                         stop=1;
+                        fallingtimes=fallingtimes-1;
                     //cout << "yes" << endl;
                         break;
                     }
@@ -469,18 +470,30 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
     for(int fallingtimes=0;fallingtimes<=matrixrow;fallingtimes++){
         //if(matrix[fallingtimes+3][col])
         for(int j=index-1;j<index+fallingblock.col-1;j++){
-            if(matrix[fallingtimes+1][j]==1){
+            if(fallingblock.shape[1][j-index+1]==0 && fallingblock.shape[2][j-index+1]==0){
+                if(matrix[fallingtimes+1][j]==1){
+                    if(matrix[fallingtimes+2][j]==1){
+                        if(matrix[fallingtimes+3][j]==1){
+                                stop=1;     
+                                fallingtimes=fallingtimes-1;                  
+                                break;
+                        }
+                    }
+                }
+            }
+            else{
                 if(matrix[fallingtimes+2][j]==1){
                     if(matrix[fallingtimes+3][j]==1){
                         if(fallingtimes==1){
                             endgame=1;
-                        //stop=1;
-                        //end=1;
+                            //stop=1;
+                            //end=1;
                             break;
                         }
                         else{
                             stop=1;
-                    //cout << "yes" << endl;
+                            fallingtimes=fallingtimes-1;
+                            //cout << "yes" << endl;
                             break;
                         }
                     }
@@ -508,7 +521,7 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
                     
                     //cout << "yes right" << endl;
                 }
-                else if(matrix[fallingtimes+1][col]==0 && matrix[fallingtimes+2][col]==1){
+                else if(matrix[fallingtimes+1][col]==0 && matrix[fallingtimes+2][col]==1 && matrix[fallingtimes+3][col]==1){
                     matrix[fallingtimes+1][col]=matrix[fallingtimes][col];
                     matrix[fallingtimes][col]=0;
                     stop=1;
@@ -635,6 +648,7 @@ void TetrisBattle41(T &fallingblock, int **matrix, int index, int matrixrow, int
                     }
                     else{
                         stop=1;
+                        fallingtimes=fallingtimes-1;
                     //cout << "yes" << endl;
                         break;
                     }
@@ -696,6 +710,8 @@ void TetrisBattle41(T &fallingblock, int **matrix, int index, int matrixrow, int
                 }
             }
         }
+        cout << "location=" << eliminationlocation << endl;
+        cout << "times=" << eliminationtimes << endl;
         if(eliminationtimes>0){
             switch(eliminationtimes){
                 case(0):
@@ -791,6 +807,7 @@ void TetrisBattle14(T &fallingblock, int **matrix, int index, int matrixrow, int
                     }
                     else{
                         stop=1;
+                        fallingtimes=fallingtimes-1;
                     //cout << "yes" << endl;
                         break;
                     }
@@ -892,6 +909,7 @@ void TetrisBattleO(T &fallingblock, int **matrix, int index, int matrixrow, int 
                     }
                     else{
                         stop=1;
+                        fallingtimes=fallingtimes-1;
                     //cout << "yes" << endl;
                         break;
                     }
@@ -1041,7 +1059,7 @@ int main(){
                     switch(str[1]){
                         case '1':
                             TetrisBattle23(fallingblockT1,matrix,index,m-5,n,endgame);
-                            cout << "endgame=" << endgame << endl;
+                            //cout << "endgame=" << endgame << endl;
                             /*for(int fallingtimes=0;fallingtimes<=m-4;fallingtimes++){
                                 for(int col=index-1;col<index-1+fallingblockT1.col;col++){
                                     matrix[fallingtimes+3][col]=fallingblockT1.shape[1][col-index+1];
