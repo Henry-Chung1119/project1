@@ -1044,6 +1044,9 @@ int main(){
     string str;
     int index;
     //讀取matrix大小
+    if(!file1){
+        cout << "File1 open fail!" << endl;
+    }
     if(initial){
         file1 >> m >> n;
         initial=0;
