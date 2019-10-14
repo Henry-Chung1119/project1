@@ -1169,9 +1169,9 @@ int main(){
                 //default:
             }
         }
-        else{
+        /*else{
             cout << "End!" << endl;
-        }
+        }*/
     }
     for(int i=4;i<m-1;i++){
         for(int j=0;j<n;j++){

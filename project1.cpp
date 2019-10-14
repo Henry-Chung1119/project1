@@ -718,13 +718,22 @@ void TetrisBattle41(T &fallingblock, int **matrix, int index, int matrixrow, int
                     }
                     //check=0;
                     eliminationlocation=elimination;
+                    for(int row=stopfalling+eliminationlocation-1;row>0;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-1][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                    }
                     eliminationtimes++;
                 }
             }
+            end=1;
         }
         //cout << "location=" << eliminationlocation << endl;
         //cout << "times=" << eliminationtimes << endl;
-        if(eliminationtimes>0){
+        /*if(eliminationtimes>0){
             switch(eliminationtimes){
                 case(0):
                     end=1;
@@ -788,7 +797,7 @@ void TetrisBattle41(T &fallingblock, int **matrix, int index, int matrixrow, int
                     end=1;
                     break;
             }
-        }
+        }*/
         //stop=0;
         //end=1;
 
