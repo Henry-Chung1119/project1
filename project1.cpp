@@ -387,6 +387,15 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
             }
         }
         if(stop){
+            /*for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        //cout << "yes" << endl;
+                        end=1;
+                    }
+                }
+            }*/
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     if(matrix[stopfalling+elimination+1][col]==0){
@@ -404,11 +413,20 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                     }
                     //check=0;
                     eliminationlocation=elimination;
+                    for(int row=stopfalling+eliminationlocation+1;row>0;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-1][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                    }
                     eliminationtimes++;
                 }
             }
+            end=1;
         }
-        if(eliminationtimes>0){
+        /*if(eliminationtimes>0){
             switch(eliminationtimes){
                 case(0):
                     end=1;
@@ -443,12 +461,22 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                     end=1;
                     break;
             }
-        }
+        }*/
         //stop=0;
         //end=1;
         //cout << "Falling:" << fallingtimes << endl;
-        if(end)
-            break;
+        if(end){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        return;
+                    }
+                }
+            }
+            return;
+            //break;
+        }
         /*cout << "Falling:" << fallingtimes << endl;
         for(int i=0;i<matrixrow+5;i++){
             for(int j=0;j<matrixcol;j++){
@@ -517,6 +545,12 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
                     matrix[fallingtimes+2][col]=fallingblock.shape[1][col-index+1];
                     matrix[fallingtimes+1][col]=fallingblock.shape[0][col-index+1];
                 }
+                else if(fallingblock.shape[1][col-index+1]==0 && fallingblock.shape[2][col-index+1]==0 && matrix[fallingtimes+2][col]==1){
+                    matrix[fallingtimes+1][col]=matrix[fallingtimes][col];
+                    matrix[fallingtimes][col]=0;
+                    stop=1;
+                    stopfalling=fallingtimes;
+                }
                 else if(matrix[fallingtimes+2][col]==0 && matrix[fallingtimes+3][col]==1){
                     if(matrix[fallingtimes+1][col]==1){
                         stop=1;
@@ -525,6 +559,14 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
                     matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
                     matrix[fallingtimes+1][col]=matrix[fallingtimes][col];
                     matrix[fallingtimes][col]=0;
+                    /*if(matrix[fallingtimes+4][col]==1){
+                        stop=1;
+                        stopfalling=fallingtimes;
+                    }
+                    else{
+                        stop=1;
+                        matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
+                    }*/
 
                     //cout << "yes right" << endl;
                 }
@@ -548,6 +590,15 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
         }
         //------
         if(stop){
+            /*for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        //cout << "yes" << endl;
+                        return;
+                    }
+                }
+            }*/
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     //different for every function------
@@ -567,11 +618,20 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
                     }
                     //check=0;
                     eliminationlocation=elimination;
+                    for(int row=stopfalling+eliminationlocation;row>0;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-1][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                    }
                     eliminationtimes++;
                 }
             }
+            end=1;
         }
-        if(eliminationtimes>0){
+        /*if(eliminationtimes>0){
             switch(eliminationtimes){
                 case(0):
                     end=1;
@@ -620,7 +680,7 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
                     end=1;
                     break;
             }
-        }
+        }*/
         //stop=0;
         //end=1;
         /*cout << "Falling:" << fallingtimes << endl;
@@ -630,8 +690,19 @@ void TetrisBattle32(T &fallingblock, int **matrix, int index, int matrixrow, int
             }
             cout << endl;
         }*/
-        if(end)
-            break;
+        //cout << stop;
+        if(end){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        return;
+                    }
+                }
+            }
+            return;
+            //break;
+        }
         //cout << "Falling:" << fallingtimes << endl;
     }
 }
@@ -699,6 +770,15 @@ void TetrisBattle41(T &fallingblock, int **matrix, int index, int matrixrow, int
         }
         //------
         if(stop){
+            /*for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        //cout << "yes" << endl;
+                        return;
+                    }
+                }
+            }*/
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     //different for every function------
@@ -801,8 +881,18 @@ void TetrisBattle41(T &fallingblock, int **matrix, int index, int matrixrow, int
         //stop=0;
         //end=1;
 
-        if(end)
-            break;
+        if(end){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        return;
+                    }
+                }
+            }
+            return;
+            //break;
+        }
         //cout << "Falling:" << fallingtimes << endl;
     }
 }
@@ -857,6 +947,15 @@ void TetrisBattle14(T &fallingblock, int **matrix, int index, int matrixrow, int
         }
         //------
         if(stop){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        //cout << "yes" << endl;
+                        return;
+                    }
+                }
+            }
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     //different for every function------
@@ -962,6 +1061,15 @@ void TetrisBattleO(T &fallingblock, int **matrix, int index, int matrixrow, int 
             }
         }
         if(stop){
+            /*for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        //cout << "yes" << endl;
+                        return;
+                    }
+                }
+            }*/
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     if(matrix[stopfalling+elimination+1][col]==0){
@@ -979,11 +1087,20 @@ void TetrisBattleO(T &fallingblock, int **matrix, int index, int matrixrow, int 
                     }
                     //check=0;
                     eliminationlocation=elimination;
+                    for(int row=stopfalling+eliminationlocation+1;row>0;row--){
+                        for(int col=0;col<matrixcol;col++){
+                            matrix[row][col]=matrix[row-1][col];
+                        }
+                    }
+                    for(int col=0;col<matrixcol;col++){
+                        matrix[0][col]=0;
+                    }
                     eliminationtimes++;
                 }
             }
+            end=1;
         }
-        if(eliminationtimes>0){
+        /*if(eliminationtimes>0){
             switch(eliminationtimes){
                 case(0):
                     end=1;
@@ -1018,9 +1135,19 @@ void TetrisBattleO(T &fallingblock, int **matrix, int index, int matrixrow, int 
                     end=1;
                     break;
             }
+        }*/
+        if(end){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<matrixcol;j++){
+                    if(matrix[i][j]==1){
+                        endgame=1;
+                        return;
+                    }
+                }
+            }
+            return;
+            //break;
         }
-        if(end)
-            break;
         //cout << "Falling:" << fallingtimes << endl;
     }
 }
