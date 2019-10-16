@@ -7,16 +7,16 @@ class block{
         int row,col;
         int **shape;
         block():row(0),col(0){}
-        block(int row,int col):row(row),col(col){}
+        block(int row,int col):row(row),col(col){
+            shape=new int*[row];
+            for(int i=0;i<row;i++)
+                shape[i]=new int[col];
+        }
 
 };
 class T1:public block{
     public:
-        //int **shape;
         T1():block(2,3){
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
             shape[0][0]=1;
             shape[0][1]=1;
             shape[0][2]=1;
@@ -24,21 +24,10 @@ class T1:public block{
             shape[1][1]=1;
             shape[1][2]=0;
         };
-        ~T1(){
-            for(int i=0;i<row;i++)
-                delete[] shape[i];
-            delete[] shape;
-        };
 };
 class T2:public block{
     public:
-        //int **shape;
-        T2(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        T2():block(3,2){
             shape[0][0]=0;
             shape[0][1]=1;
             shape[1][0]=1;
@@ -50,12 +39,7 @@ class T2:public block{
 
 class T3:public block{
     public:
-        T3(){
-            row=2;
-            col=3;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        T3():block(2,3){
             shape[0][0]=0;
             shape[0][1]=1;
             shape[0][2]=0;
@@ -67,12 +51,7 @@ class T3:public block{
 
 class T4:public block{
     public:
-        T4(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        T4():block(3,2){
             shape[0][0]=1;
             shape[0][1]=0;
             shape[1][0]=1;
@@ -84,12 +63,7 @@ class T4:public block{
 
 class L1:public block{
     public:
-        L1(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        L1():block(3,2){
             shape[0][0]=1;
             shape[0][1]=0;
             shape[1][0]=1;
@@ -101,12 +75,7 @@ class L1:public block{
 
 class L2:public block{
     public:
-        L2(){
-            row=2;
-            col=3;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        L2():block(2,3){
             shape[0][0]=1;
             shape[0][1]=1;
             shape[0][2]=1;
@@ -118,12 +87,7 @@ class L2:public block{
 
 class L3:public block{
     public:
-        L3(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        L3():block(3,2){
             shape[0][0]=1;
             shape[0][1]=1;
             shape[1][0]=0;
@@ -135,12 +99,7 @@ class L3:public block{
 
 class L4:public block{
     public:
-        L4(){
-            row=2;
-            col=3;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        L4():block(2,3){
             shape[0][0]=0;
             shape[0][1]=0;
             shape[0][2]=1;
@@ -152,12 +111,7 @@ class L4:public block{
 
 class J1:public block{
     public:
-        J1(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        J1():block(3,2){
             shape[0][0]=0;
             shape[0][1]=1;
             shape[1][0]=0;
@@ -169,12 +123,7 @@ class J1:public block{
 
 class J2:public block{
     public:
-        J2(){
-            row=2;
-            col=3;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        J2():block(2,3){
             shape[0][0]=1;
             shape[0][1]=0;
             shape[0][2]=0;
@@ -186,12 +135,7 @@ class J2:public block{
 
 class J3:public block{
     public:
-        J3(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        J3():block(3,2){
             shape[0][0]=1;
             shape[0][1]=1;
             shape[1][0]=1;
@@ -203,12 +147,7 @@ class J3:public block{
 
 class J4:public block{
     public:
-        J4(){
-            row=2;
-            col=3;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        J4():block(2,3){
             shape[0][0]=1;
             shape[0][1]=1;
             shape[0][2]=1;
@@ -220,12 +159,7 @@ class J4:public block{
 
 class S1:public block{
     public:
-        S1(){
-            row=2;
-            col=3;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        S1():block(2,3){
             shape[0][0]=0;
             shape[0][1]=1;
             shape[0][2]=1;
@@ -237,12 +171,7 @@ class S1:public block{
 
 class S2:public block{
     public:
-        S2(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        S2():block(3,2){
             shape[0][0]=1;
             shape[0][1]=0;
             shape[1][0]=1;
@@ -254,12 +183,7 @@ class S2:public block{
 
 class Z1:public block{
     public:
-        Z1(){
-            row=2;
-            col=3;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        Z1():block(2,3){
             shape[0][0]=1;
             shape[0][1]=1;
             shape[0][2]=0;
@@ -271,12 +195,7 @@ class Z1:public block{
 
 class Z2:public block{
     public:
-        Z2(){
-            row=3;
-            col=2;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        Z2():block(3,2){
             shape[0][0]=0;
             shape[0][1]=1;
             shape[1][0]=1;
@@ -288,12 +207,7 @@ class Z2:public block{
 
 class I1:public block{
     public:
-        I1(){
-            row=4;
-            col=1;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        I1():block(4,1){
             shape[0][0]=1;
             shape[1][0]=1;
             shape[2][0]=1;
@@ -303,12 +217,7 @@ class I1:public block{
 
 class I2:public block{
     public:
-        I2(){
-            row=1;
-            col=4;
-            shape=new int*[row];
-            for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+        I2():block(1,4){
             shape[0][0]=1;
             shape[0][1]=1;
             shape[0][2]=1;
@@ -318,12 +227,12 @@ class I2:public block{
 
 class O:public block{
     public:
-        O(){
-            row=2;
+        O():block(2,2){
+            /*row=2;
             col=2;
             shape=new int*[row];
             for(int i=0;i<row;i++)
-                shape[i]=new int[col];
+                shape[i]=new int[col];*/
             shape[0][0]=1;
             shape[0][1]=1;
             shape[1][0]=1;
@@ -387,15 +296,6 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
             }
         }
         if(stop){
-            /*for(int i=0;i<4;i++){
-                for(int j=0;j<matrixcol;j++){
-                    if(matrix[i][j]==1){
-                        endgame=1;
-                        //cout << "yes" << endl;
-                        end=1;
-                    }
-                }
-            }*/
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
                 for(int col=0;col<matrixcol;col++){
                     if(matrix[stopfalling+elimination+1][col]==0){
