@@ -250,20 +250,21 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
     int stopfalling=0;
     //T1 fallingblock;
     for(int fallingtimes=0;fallingtimes<=matrixrow;fallingtimes++){
+
+        //方塊掉落處理，每當fallingtimes+1，方塊就往下掉落一次
         //if(matrix[fallingtimes+3][col])
         for(int j=index-1;j<index+fallingblock.col-1;j++){
             if(matrix[fallingtimes+2][j]==1){
                 if(matrix[fallingtimes+3][j]==1){
                     if(fallingtimes==1){
+                        //方塊卡在矩陣外掉不下來，遊戲結束
                         endgame=1;
-                        //stop=1;
-                        //end=1;
                         break;
                     }
                     else{
+                        //方塊在矩陣內但無法繼續掉落，換下一個方塊
                         stop=1;
                         stopfalling=fallingtimes-1;
-                    //cout << "yes" << endl;
                         break;
                     }
                 }
@@ -274,17 +275,24 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
         if(!stop){
             for(int col=index-1;col<index-1+fallingblock.col;col++){
                 if(fallingtimes==0){
+                    //將即將掉落的方塊配置在矩陣上方的緩衝區
                     matrix[fallingtimes+3][col]=fallingblock.shape[1][col-index+1];
                     matrix[fallingtimes+2][col]=fallingblock.shape[0][col-index+1];
                 }
                 else if(matrix[fallingtimes+2][col]==0 && matrix[fallingtimes+3][col]==1){
+                    //特殊情形，方塊矩陣的第1列有0，0下方若為1，往下移一格即停止
+                    //例： 
+                    //    111
+                    //    001
+                    //    100
+                    //    100
                     matrix[fallingtimes+2][col]=matrix[fallingtimes+1][col];
                     matrix[fallingtimes+1][col]=0;
                     stop=1;
                     stopfalling=fallingtimes;
-                    //cout << "yes right" << endl;
                 }
                 else{
+                    //若無以上特殊狀況即正常下移一格
                     if(fallingtimes==matrixrow){
                         stop=1;
                         stopfalling=fallingtimes;
@@ -297,21 +305,20 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
         }
         if(stop){
             for(int elimination=1;elimination<=fallingblock.row;elimination++){
+                //判斷是否需要消除，如果不用，check設為0
                 for(int col=0;col<matrixcol;col++){
                     if(matrix[stopfalling+elimination+1][col]==0){
                         check=0;
-                        //end=1;
-                        //cout << "yes again" << endl;
                         break;
                     }
                     else
                         check=1;
                 }
+                //如果check為1，即消除那一列，並往下移一格
                 if(check){
                     for(int col=0;col<matrixcol;col++){
                         matrix[stopfalling+elimination+1][col]=0;
                     }
-                    //check=0;
                     eliminationlocation=elimination;
                     for(int row=stopfalling+eliminationlocation+1;row>0;row--){
                         for(int col=0;col<matrixcol;col++){
@@ -366,6 +373,7 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
         //end=1;
         //cout << "Falling:" << fallingtimes << endl;
         if(end){
+            //檢查上方緩衝區是否有殘留方塊，如果有，就結束遊戲
             for(int i=0;i<4;i++){
                 for(int j=0;j<matrixcol;j++){
                     if(matrix[i][j]==1){
@@ -375,15 +383,7 @@ void TetrisBattle23(T &fallingblock, int **matrix, int index, int matrixrow, int
                 }
             }
             return;
-            //break;
         }
-        /*cout << "Falling:" << fallingtimes << endl;
-        for(int i=0;i<matrixrow+5;i++){
-            for(int j=0;j<matrixcol;j++){
-                cout << matrix[i][j];
-            }
-        cout << endl;
-        }*/
     }
 }
 
@@ -1110,21 +1110,12 @@ int main(){
     while(file1 >> str && endgame!=1){
         if(str!="End"){
             file1 >> index;
-            //cout << str << " " << index << endl;
+            //判斷輸入的方塊為何
             switch(str[0]){
                 case 'T':
                     switch(str[1]){
                         case '1':
                             TetrisBattle23(fallingblockT1,matrix,index,m-5,n,endgame);
-                            //cout << "endgame=" << endgame << endl;
-                            /*for(int fallingtimes=0;fallingtimes<=m-4;fallingtimes++){
-                                for(int col=index-1;col<index-1+fallingblockT1.col;col++){
-                                    matrix[fallingtimes+3][col]=fallingblockT1.shape[1][col-index+1];
-                                    matrix[fallingtimes+2][col]=fallingblockT1.shape[0][col-index+1];
-                                    matrix[fallingtimes+1][col]=0;
-                                }
-                                cout << "Falling:" << fallingtimes << endl;
-                            }*/
                             break;
                         case '2':
                             TetrisBattle32(fallingblockT2,matrix,index,m-5,n,endgame);
@@ -1220,12 +1211,13 @@ int main(){
     }
     //cout << matrix[0][0];
     //file1.close();
-    ofstream file2("Tetris.output");
+    ofstream file2("Tetris.final");
     //file2.open("Tetris.output");
     if(!file2){
         cout << "File2 open fail!" << endl;
     }
     else{
+        //因為矩陣上方跟下方我都有留緩衝區，所以要輸出矩陣大小會比我設定的小
         for(int i=4;i<m-1;i++){
             for(int j=0;j<n;j++){
                 file2 << matrix[i][j];

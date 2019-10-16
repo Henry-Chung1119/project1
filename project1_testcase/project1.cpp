@@ -1220,7 +1220,7 @@ int main(){
     }
     //cout << matrix[0][0];
     //file1.close();
-    ofstream file2("Tetris.output");
+    ofstream file2("Tetris.final");
     //file2.open("Tetris.output");
     if(!file2){
         cout << "File2 open fail!" << endl;
